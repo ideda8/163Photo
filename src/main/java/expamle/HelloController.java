@@ -23,6 +23,7 @@ public class HelloController {
     }
 
     private static String myUrl = "http://photo.163.com/da3da4/";
+    private static String folderName = "da3da4";
     private static String saveDLPath = "S:\\Download\\Downloads\\";
 
     @RequestMapping("/list")
@@ -39,6 +40,10 @@ public class HelloController {
     }
 
     private List<Album> getAlbums(String myUrl) {
+        File folder = new File(saveDLPath + folderName);
+        if(!folder.exists())
+            folder.mkdirs();
+
         String resp1 = HttpClient.doGet(myUrl);
         //获取到相册列表Json http://s2.ph.126.net/nN-QtfziLzU0CqQV6YvQNA==/267181362483110.js
         String albumUrl = resp1.substring(resp1.indexOf("albumUrl ")+12, resp1.indexOf("};")-3);
@@ -47,14 +52,14 @@ public class HelloController {
         String albumUrlJson = null;
         String saveFileName = albumUrl.substring(albumUrl.lastIndexOf("/"), albumUrl.length());
         try {
-            HttpClient.httpDownload(albumUrl,saveDLPath + saveFileName);
+            HttpClient.httpDownload(albumUrl,saveDLPath + folderName + saveFileName);
         } catch (Exception e) {
             e.printStackTrace();
         }
         //读取js文件
         StringBuffer lineJs = new StringBuffer();
         try{
-            File file = new File(saveDLPath + saveFileName);
+            File file = new File(saveDLPath + folderName + saveFileName);
             if (file.isFile() && file.exists()) { //判断文件是否存在
                 InputStreamReader read = new InputStreamReader(new FileInputStream(file), "GBK");//考虑到编码格式
                 BufferedReader bufferedReader = new BufferedReader(read);
@@ -84,6 +89,22 @@ public class HelloController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return albumList;
     }
+
+    @RequestMapping("/albumDetail")
+    public @ResponseBody String albumDetail(String jsurl){
+        //打开每个相册 http://photo.163.com/da3da4/#m=1&aid=34377639&p=1
+        String resp3 = HttpClient.doGet(jsurl);
+        System.out.printf(resp3);
+        //需要下载js http://s2.ph.126.net/igkrJ8WalqfKT9_6QYv5Dg==/271579405663997.js
+
+        //提取下载 获取公共方法
+
+        return resp3;
+    }
+
+
+
 }

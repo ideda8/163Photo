@@ -16,15 +16,18 @@
         <th>id</th>
         <th>数量</th>
         <th>相册名</th>
-        <th>地址</th>
+        <th>相册url</th>
+        <th>相册内容js</th>
+        <th>下载</th>
 
     </tr>
     <tr  th:each="list:${list}">
         <td th:text="${list.id}"></td>
         <td th:text="${list.count}"></td>
         <td th:text="${list.name}"></td>
-        <td th:text="#m=1&aid=${list.id}&p=1"></td>
-
+        <td th:text="'#m=1&amp;aid=' + ${list.id} + '&amp;p=1'"></td>
+        <td th:text="${list.purl}"></td>
+        <td><a th:href="'/albumDetail?jsurl=' + ${list.purl}" target="_blank">下载</a></td>
     </tr>
 </table>
 
