@@ -20,7 +20,7 @@
     <div class="mar">
         <button type="button" class="btn btn-primary" id="getPick">下载选中</button>
     </div>
-    <table class="table table-striped table-bordered">
+    <table class="table table-striped table-bordered table-hover">
         <tr>
             <th></th>
             <th>id</th>
@@ -35,7 +35,7 @@
             <td th:text="${list.count}"></td>
             <td th:text="${list.name}"></td>
             <td th:text="${list.purl}"></td>
-            <td><a th:href="'/albumDetail?purl=' + ${list.purl} + '&amp;albumName=' + ${list.name} + '&amp;count=' + ${list.count}" target="_blank">下载</a></td>
+            <td><a th:href="'/albumDetail?purl=' + ${list.purl} + '&amp;albumName=' + ${list.name} + '&amp;count=' + ${list.count} + '&amp;id=' + ${list.id}" target="_blank">下载</a></td>
         </tr>
     </table>
 </div>
