@@ -17,7 +17,7 @@ public class Album {
     private String dmt;
     private String alc;
     private String kw;
-    private String purl;
+    private String purl;    //相册里图片js
 
     public Integer getId() {
         return id;
