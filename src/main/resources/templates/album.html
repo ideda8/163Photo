@@ -17,6 +17,15 @@
 <!--<div th:each="asss:${list}" th:text="${list}"></div>-->
 <div class="container">
     <h2>Albums</h2>
+
+    <div class="form-group">
+        <label for="url" class="col-sm-1 control-label">相册地址</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" id="url" name="url" />
+        </div>
+        <button type="button" class="btn btn-primary" id="getList">获取列表</button>
+    </div>
+
     <div class="mar">
         <button type="button" class="btn btn-primary" id="getPick">下载选中</button>
     </div>
@@ -35,7 +44,12 @@
             <td th:text="${list.count}"></td>
             <td th:text="${list.name}"></td>
             <td th:text="${list.purl}"></td>
-            <td><a th:href="'/albumDetail?purl=' + ${list.purl} + '&amp;albumName=' + ${list.name} + '&amp;count=' + ${list.count} + '&amp;id=' + ${list.id}" target="_blank">下载</a></td>
+            <td><a th:href="'/albumDetail?purl=' + ${list.purl}
+                    + '&amp;albumName=' + ${list.name}
+                    + '&amp;count=' + ${list.count}
+                    + '&amp;id=' + ${list.id}
+                    + '&amp;folder=' + ${folderName}"
+                   target="_blank">下载</a></td>
         </tr>
     </table>
 </div>
@@ -59,7 +73,10 @@
                 alert("错误！！");
             }
         });
+    });
 
+    $('#getList').click(function(){
+        location.href = "/list2?url=" + $('#url').val();
     });
 
 </script>
