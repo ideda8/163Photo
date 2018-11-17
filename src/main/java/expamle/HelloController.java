@@ -107,7 +107,7 @@ public class HelloController {
 //    Integer reOpen = 0;
     @RequestMapping("/albumDetail")
     public @ResponseBody String albumDetail(String purl, String albumName, Integer count, String id){
-        albumName = albumName.trim();
+        albumName = albumName.trim().replaceAll("\\.", "x");
         //根据相册名创建文件夹
         File folder = new File(saveDLPath + folderName + "/" + albumName);
         if(!folder.exists())
@@ -229,7 +229,7 @@ public class HelloController {
             }
         }
 
-        return "下载完成";
+        return "开始异步下载";
     }
 
     private void download(String albumName, List<Photo> photoList) {
@@ -238,14 +238,20 @@ public class HelloController {
             l++;
             String ext =  orgPhoto.getOurl().substring(orgPhoto.getOurl().lastIndexOf("."), orgPhoto.getOurl().length());   //后缀
             if(StringUtils.isEmpty(orgPhoto.getDesc())) {
-                orgPhoto.setDesc(orgPhoto.getId() + ext);
+                orgPhoto.setDesc(orgPhoto.getId() + ext.trim());
             }
             System.out.println("正在下载相册<"+ albumName +">" + l + " " + orgPhoto.getDesc());
             //需要下载js http://s2.ph.126.net/igkrJ8WalqfKT9_6QYv5Dg==/271579405663997.js 包含相册中所有普通图片(murl) 原图(ourl)
             String photoFileUrl = orgPhoto.getOurl().substring(2, orgPhoto.getOurl().length());
             try {
-                HttpClient.httpDownload(photoServerPath + photoFileUrl,
-                        saveDLPath + folderName + File.separator + albumName + File.separator + orgPhoto.getDesc() + ext);
+                String saveFileName = orgPhoto.getDesc().trim() + ext.trim().replaceAll("\\?","x");
+                String saveFilePath = saveDLPath + folderName + File.separator + albumName + File.separator;
+                //检查文件名是否已存在 如果已存在后面加东西
+//                File sFile = new File(saveFilePath + saveFileName);
+//                if(sFile.exists()){
+//                    saveFileName = saveFileName.substring(0, saveFileName.lastIndexOf(".")) + "x" + saveFileName.substring(saveFileName.lastIndexOf("."));
+//                }
+                HttpClient.httpDownload(photoServerPath + photoFileUrl, saveFilePath + saveFileName);
             } catch (Exception e) {
                 e.printStackTrace();
             }
