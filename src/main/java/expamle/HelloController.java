@@ -25,7 +25,7 @@ public class HelloController {
     }
 
     private static String myUrl = "http://photo.163.com/";
-    private static String saveDLPath = "S:\\Download\\Downloads\\";
+    private static String saveDLPath = "/Users/da/Downloads";
     private static String photoServerPath = "http://img1.ph.126.net/";
     private static String photoServerPath2 = "http://img5.bimg.126.net/";
 
@@ -43,11 +43,13 @@ public class HelloController {
     public String list2(Model model, String url){
         if(!StringUtils.isEmpty(url)) {
             String folderName = url.substring(url.lastIndexOf("/"));
-            List<Album> albumList = getAlbums(url, folderName);
             //创建文件夹
             File folder = new File(saveDLPath + folderName);
             if(!folder.exists())
                 folder.mkdirs();
+
+            List<Album> albumList = getAlbums(url, folderName);
+
             model.addAttribute("list", albumList);
             model.addAttribute("folderName", folderName);
         }
@@ -69,7 +71,8 @@ public class HelloController {
         try {
             JavaType javaType = objectMapper.getTypeFactory().constructParametricType(ArrayList.class, Album.class);
             String j = albumUrlJson2.replaceAll("'", "\"").replaceAll("<","&gt;")
-                    .replaceAll(">","&lt;").replaceAll("\\\\","");
+                    .replaceAll(">","&lt;").replaceAll("\\\\","")
+                    .replaceAll("\\ \"","x");
             albumList = (List<Album>)objectMapper.readValue(j, javaType);
         } catch (IOException e) {
             e.printStackTrace();
