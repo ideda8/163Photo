@@ -17,7 +17,8 @@ public class Album {
     private String dmt;
     private String alc;
     private String kw;
-    private String purl;
+    private String purl;    //相册里图片js
+    private String folder;
 
     public Integer getId() {
         return id;
@@ -147,6 +148,14 @@ public class Album {
         this.purl = purl;
     }
 
+    public String getFolder() {
+        return folder;
+    }
+
+    public void setFolder(String folder) {
+        this.folder = folder;
+    }
+
     @Override
     public String toString() {
         return "Album{" +
@@ -167,6 +176,7 @@ public class Album {
                 ", alc='" + alc + '\'' +
                 ", kw='" + kw + '\'' +
                 ", purl='" + purl + '\'' +
+                ", folder='" + folder + '\'' +
                 '}';
     }
 
